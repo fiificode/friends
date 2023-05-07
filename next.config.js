@@ -5,9 +5,9 @@ const nextConfig = {
     output: 'export',
   };
    
-  // module.exports = nextConfig;
+  module.exports = nextConfig;
   module.exports = {
-    ...nextConfig,
+    nextConfig,
     images: {
       unoptimized: true,
     },
