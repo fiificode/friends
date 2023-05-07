@@ -5,7 +5,7 @@ import Input from "@/app/components/inputs/input";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthSocialButton from "./AuthSocialButton";
-import {BsGithub,BsGoogle} from 'react-icons/bs'
+import { BsGithub, BsGoogle } from "react-icons/bs";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -28,12 +28,11 @@ const AuthForm = () => {
     if (variant === "LOGIN") {
       // NextAuth SignIn
     }
-
-};
-const socialAction = (action: string) => {
-  setIsLoading(true);
-  //  NextAuth social signin
-};
+  };
+  const socialAction = (action: string) => {
+    setIsLoading(true);
+    //  NextAuth social signin
+  };
 
   const {
     register,
@@ -51,7 +50,13 @@ const socialAction = (action: string) => {
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
-            <Input id="name" label="Name" register={register} errors={errors} />
+            <Input
+              id="name"
+              label="Name"
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+            />
           )}
           <Input
             id="email"
@@ -59,6 +64,7 @@ const socialAction = (action: string) => {
             type="email"
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
           <Input
             id="password"
@@ -66,6 +72,7 @@ const socialAction = (action: string) => {
             type="password"
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
           <div className="mt-5">
             <Button disabled={isLoading} fullWidth type="submit">
@@ -87,25 +94,22 @@ const socialAction = (action: string) => {
           {/* social logins  */}
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
-            icon={BsGithub}
-            onClick={()=>socialAction('github')}
-             />
-               <AuthSocialButton
-            icon={BsGoogle}
-            onClick={()=>socialAction('google')}
-             />
+              icon={BsGithub}
+              onClick={() => socialAction("github")}
+            />
+            <AuthSocialButton
+              icon={BsGoogle}
+              onClick={() => socialAction("google")}
+            />
           </div>
         </div>
-        <div
-        className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500"
-        >
-            {variant === 'LOGIN' ? "New to Messenger?":"Already have an account?"}
-        <div
-        onClick={toggleVariant}
-        className="underline cursor-pointer "
-        >
+        <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
+          {variant === "LOGIN"
+            ? "New to Messenger?"
+            : "Already have an account?"}
+          <div onClick={toggleVariant} className="underline cursor-pointer ">
             {variant === "LOGIN" ? "Create an account" : "Login"}
-        </div>
+          </div>
         </div>
       </div>
     </div>
