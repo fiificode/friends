@@ -1,3 +1,4 @@
+import ToastContext from './context/ToasterContext'
 import './globals.css'
 import { Raleway } from 'next/font/google'
 
@@ -15,7 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ToastContext />
+        {children}
+      </body>
     </html>
   )
 }

@@ -7,6 +7,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import {signIn} from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -20,25 +22,10 @@ const AuthForm = () => {
     } else setVariant("LOGIN");
   }, [variant]);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-
-    if (variant === "REGISTER") {
-      // Axios Register
-      axios.post("/api/register",data)
-    }
-    if (variant === "LOGIN") {
-      // NextAuth SignIn
-    }
-  };
-  const socialAction = (action: string) => {
-    setIsLoading(true);
-    //  NextAuth social signin
-  };
-
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -47,6 +34,41 @@ const AuthForm = () => {
       password: "",
     },
   });
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true);
+
+    if (variant === "REGISTER") {
+      // Axios Register
+      axios.post("/api/register",data)
+      .catch(()=> toast.error('Something went wrong!'))
+      .finally(()=> setIsLoading(false))
+    }
+    if (variant === "LOGIN") {
+      // NextAuth SignIn
+      signIn('credentials',{
+        ...data,
+        redirect:false,
+      })
+      .then((callback)=> {
+        if(callback?.error) {
+          toast.error("Invalid credentials");
+          resetField
+        }
+        if(callback?.ok && !callback?.error) {
+          toast.success("Successfully logged In");
+          resetField
+        }
+      })
+      .finally(()=>setIsLoading(false));
+    }
+  };
+  const socialAction = (action: string) => {
+    setIsLoading(true);
+    //  NextAuth social signin
+  };
+
+
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
