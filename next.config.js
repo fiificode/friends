@@ -2,13 +2,22 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-    output: 'export',
-  };
-   
-  // module.exports = nextConfig;
-  module.exports = {
-    nextConfig,
-    images: {
-      unoptimized: true,
-    },
-  };
+  experimental: {
+    swcPlugins: [["next-superjson-plugin", {}]],
+  },
+  images: {
+    // unoptimized: true,
+    domains: [
+      "res.cloudinary.com",
+      "avatars.githubusercontent.com",
+      "lh3.googleusercontent.com"
+    ]
+  },
+
+};
+
+module.exports = nextConfig;
+// module.exports = {
+//   nextConfig,
+
+// };
